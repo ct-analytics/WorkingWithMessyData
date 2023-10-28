@@ -1,0 +1,50 @@
+/*-- scss:defaults --*/
+
+// fonts
+$font-family-sans-serif: montserrat, sans-serif !default;
+
+// colors
+$body-bg: #fff !default;
+$body-color: #212529 !default;
+$link-color: #0088CC !default;
+$selection-bg: #999999 !default;
+
+// headings
+$presentation-heading-font: montserrat, sans-serif !default;
+$presentation-heading-color: #212529 !default;
+$presentation-h1-font-size:	2.0em;
+$presentation-h2-font-size:	1.6em;
+$presentation-h3-font-size:	1.3em;
+$presentation-h4-font-size:	1em;
+
+/*-- scss:rules --*/
+
+.reveal a {
+  line-height: 1.3em;
+}
+
+#credit {
+  text-align: center;
+}
+
+.subtitle h4,
+.subtitle p {
+  text-align: center;
+}
+
+.subtitle ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+.variables {
+  font-size: .7em;
+}
+
+.mlbvideo {
+  display: block;
+}
+
+.fragment ul {
+  margin-bottom: 0 !important;
+}

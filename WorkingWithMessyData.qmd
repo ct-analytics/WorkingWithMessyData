@@ -1,0 +1,50 @@
+---
+title: "Working with Messy Data"
+author: "Christopher Teixeira"
+
+format:
+    revealjs:
+        logo: img/logo.png
+        footer: "Christopher Teixeira"
+        theme: cteixeira_theme.scss
+        width: 1350
+        self-contained: true
+        preload-iframes: true
+        preview-links: true
+
+---
+
+## A little about me
+
+## Reading in data
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+library(tidyverse)
+data(iris)
+head(iris)
+
+```
+
+### Python
+
+```{python}
+#| label: load data
+#| python.reticulate: FALSE
+
+print("hello")
+from sklearn import datasets
+iris = datasets.load_iris()
+
+print(iris)
+
+``` 
+
+:::
+
+## hopefully it worked!
+
+yay!
