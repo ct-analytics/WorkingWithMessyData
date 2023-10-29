@@ -4,7 +4,7 @@ author: "Christopher Teixeira"
 
 format:
     revealjs:
-        logo: img/logo.png
+        logo: img/icon.png
         footer: "Christopher Teixeira"
         theme: cteixeira_theme.scss
         width: 1350
@@ -14,7 +14,46 @@ format:
 
 ---
 
-## A little about me
+## A little about me...
+
+:::: {.columns}
+
+::: {.column width="70%"}
+<br>
+
+### Christopher Teixeira {id="name"}
+### Principal Data Scientist
+### The MITRE Corporation
+
+<br><br>
+
+::::{.columns}
+::: {.column width="45%"}
+#### Interests
+
+- Data Analytics
+- Applied Statistics
+- Operations Research
+
+:::
+
+::: {.column width="45%"}
+#### Education
+
+- MS in Operations Research, George Mason University
+- BSc in Mathematics, Worcester Polytechnic Institute
+
+:::
+::::
+
+:::
+
+::: {.column width="30%"}
+
+![](img/profile.png){fig-align="center"}
+
+:::
+::::
 
 ## Reading in data
 
