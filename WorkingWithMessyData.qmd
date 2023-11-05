@@ -98,25 +98,31 @@ pyskim
 strings to numbers
 using factors
 
-## Working with missing data
+# Working with missing data
 
-- What causes missing data?
-- Imputing missing data: when and why?
+## What causes missing data?
+
+## Imputing missing data
+- when and why?
 - How to impute missing data
   - replace with mean
   - MICE/MIDAS
 
-## Cautionary tales in manipulating data
+# Cautionary tales in manipulating data
 
-- data drift
-- cognitive biases
-- simpson's paradox
-- goodhart's law
+## data drift
 
-## Sharing your data with others
+## cognitive biases
 
-- reproducibility using rmarkdown/jupyter/quarto
-- pins
+## simpson's paradox
+
+## goodhart's law
+
+# Sharing your data with others
+
+## reproducibility using rmarkdown/jupyter/quarto
+
+## pins
 - metadata
 
 ## Discussion / Contact Info
