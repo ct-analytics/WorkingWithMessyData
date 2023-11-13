@@ -59,7 +59,7 @@ format:
 
 
 
-## Reading in data
+## Reading in data {.smaller}
 
 ::: {.panel-tabset}
 
@@ -88,39 +88,94 @@ print(iris)
 
 :::
 
-## Exploratory data analysis
+## Exploratory data analysis {.smaller}
+
+Exploratory data analysis is ...
+
+::: {.panel-tabset}
+
+### R
 
 skimr
+
+### Python
+
 pyskim
 
-## Changing data types
+:::
+
+## Changing data types {.smaller}
+
+::: {.panel-tabset}
+
+### R
 
 strings to numbers
 using factors
 
+### Python
+
+:::
+
+
 # Working with missing data
 
-## What causes missing data?
+## Questions to ask when working with missing data
+
+- Does "missing" mean something different from "0"?
+- Is "missing" captured in another way? 
+- Was there a change in how data was being captured?
+- Does it make sense to replacing missing values?
 
 ## Imputing missing data
-- when and why?
-- How to impute missing data
-  - replace with mean
-  - MICE/MIDAS
 
-# Cautionary tales in manipulating data
+There are two general approaches:
+- Overly simple approach: replace missing values with mean, median, or mode
+- Sophisticated approach: replacing missing values by analyzing the full dataset
 
-## data drift
+## Multivariate Imputation by Chained Equations (MICE)
 
-## cognitive biases
+::: {.panel-tabset}
 
-## simpson's paradox
+### R
 
-## goodhart's law
+### Python
+
+:::
+
+# Cautionary tales in working with data
+
+## Data drift {.smaller}
+
+Changes in the data can happen over time, resulting in "data drift" that can impact model performance or other decisions that can be overlooked if only near term changes are considered.
+
+![](https://images.datacamp.com/image/upload/v1673459876/Concept_Drift_b16df50c98.png){fig-alt="Four different types of data drift described visually." fig-align="center"}
+
+::: aside
+Image taken from [DataCamp](https://www.datacamp.com/tutorial/understanding-data-drift-model-drift).
+:::
+
+## Cognitive biases {.smaller}
+
+Cognitive biases are systematic patterns of deviation from norm and/or rationality in judgment. They are often studied in psychology, sociology and behavioral economics.^[Haselton MG, Nettle D, Andrews PW (2005). "The evolution of cognitive bias" (PDF). In Buss DM (ed.). The Handbook of Evolutionary Psychology. Hoboken, NJ: John Wiley & Sons Inc. pp. 724–746.]
+
+Some biases to be aware of:
+
+- Survivorship bias
+- Sunk cost fallacy
+- False causality
+- Availability bias
+- Confirmation bias
+
+## Simpson's paradox
+
+## Goodhart's law
 
 # Sharing your data with others
 
-## reproducibility using rmarkdown/jupyter/quarto
+## Reproducibility 
+
+
 
 ## pins
 - metadata
