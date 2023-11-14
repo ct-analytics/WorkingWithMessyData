@@ -3,3 +3,9 @@ _extensions/
 .Rproj.user
 data/
 .ipynb_checkpoints/
+/.luarc.json
+WorkingWithMessyData_files/
+.DS_Store
+.RData
+.Rhistory
+.vdoc.r
