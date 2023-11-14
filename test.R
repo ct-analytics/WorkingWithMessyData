@@ -42,3 +42,12 @@ ggMarginal(g, type="histogram")
 ### MICE
 
 library(mice)
+md.pattern(df.subset)
+
+imp <- df.subset |>
+    mice(maxit=10, seed=42)
+
+
+
+
+
