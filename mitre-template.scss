@@ -1,0 +1,142 @@
+/*-- scss:defaults --*/
+
+@import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+
+// fonts
+$font-family-sans-serif: "Arial Narrow" !default;
+
+// colors
+$MITRE_blue: #005B94;
+$MITRE_highlighter: #FFF601;
+$MITRE_dark_navy: #0B2338;
+$MITRE_navy: #0D2F4F;
+$MITRE_light_blue: #87DEFF;
+$MITRE_black: #111921;
+$MITRE_dark_gray: #7E8284;
+$MITRE_silver: #D4D4D3;
+$MITRE_light_silver: #F1F3F4;
+$MITRE_white: #FFFFFF;
+
+
+$body-bg: $MITRE_white !default;
+$body-color: $MITRE_dark_navy !default;
+$link-color: $MITRE_light_blue !default;
+
+$mermaid-bg-color: $MITRE_white;
+$mermaid-edge-color: $MITRE_dark_navy;
+$mermaid-node-fg-color: $body-color;
+$mermaid-fg-color: $body-color;
+$mermaid-fg-color--lighter: lighten($body-color, 10%);
+$mermaid-fg-color--lightest: lighten($body-color, 20%);
+$mermaid-font-family: $font-family-sans-serif;
+$mermaid-label-bg-color: $body-bg;
+$mermaid-label-fg-color: $MITRE_blue;
+$mermaid-node-bg-color: rgba($MITRE_white, 0.1);
+$mermaid-node-fg-color: $MITRE_blue;
+
+// $selection-bg: #0088cc !default;
+
+// headings
+$presentation-heading-font: Arial !default;
+$presentation-heading-color: $MITRE_dark_navy !default;
+
+$presentation-font-size-root: 32px;
+
+$presentation-block-margin: 6px;
+
+/*-- scss:rules --*/
+
+.reveal a {
+  line-height: 1.3em;
+}
+
+li span {
+  color: $link-color;
+}
+
+#name {
+  color: $MITRE_blue !important;
+//   text-align: center !important;
+}
+
+#subtitle {
+//   font-size: small;
+  color: $MITRE_navy;
+  text-align: center;
+}
+
+#release-clause p {
+  // display: flex; 
+  // line-height:1.1em !important;
+  text-align: left;
+  font-size: 1.5em;;
+  // align-self: flex-end;
+  margin: 1.5em !important;
+}
+
+h3 {
+    color: $MITRE_navy !important;
+    text-align: center;
+}
+
+h4 {
+    color: $MITRE_navy !important;
+    text-align: center;
+}
+
+p img {
+    margin: 0 auto !important;
+}
+
+#text-highlight {
+    color: $MITRE_blue !important;
+}
+
+#icons {
+    // filter: invert(19%) sepia(86%) saturate(2248%) hue-rotate(184deg) brightness(96%) contrast(103%);
+    // color-interpolation-filters: $MITRE_blue;
+    filter: invert(100%);
+    width: 50%;
+    margin: 0 auto;
+}
+
+.center {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 75%;
+}
+
+// .center img {
+//     max-height: 500px;
+// }
+
+p span.img-caption {
+  padding-right: 2.0em;
+  font-style: italic;
+  font-size: 0.7em;
+}
+
+i {
+  color: $MITRE_blue;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+// .reveal .slide .footer {
+//   display: contents !important;
+// }
+
+.callout.callout-style-simple {
+  border-left-color: $MITRE_blue !important;
+  background-color: $MITRE_white;
+  color: $MITRE_blue;
+}
+
+.center-xy {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 90%;
+}
