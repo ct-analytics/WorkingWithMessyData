@@ -1,20 +1,33 @@
 ---
-title: "Working with Messy Data"
-author: "Christopher Teixeira"
-
 format:
     revealjs:
-        logo: img/icon.png
-        footer: "Christopher Teixeira"
-        theme: cteixeira_theme.scss
+        logo: img/https___comm.mitre.org_strategiccommunications_wp-content_uploads_sites_170_2020_01_MITRE_logos_Base.svg
+        footer: © 2023 THE MITRE CORPORATION. ALL RIGHTS RESERVED. Approved for public release; distribution unlimited. Case number 23-03859-1.
+        theme: mitre-template.scss
         width: 1350
-        self-contained: true
+        self-contained: false
         preload-iframes: true
         preview-links: true
+        disable-layout: false
+        code-fold: show
+        code-overflow: wrap
+        code-copy: hover
+        output-location: column
+        scrollable: true
 
 ---
+# Working with Messy Data
+
+<span id="name">Christopher Teixeira</span><br>
+`r format(Sys.Date(), "%B %d, %Y")`
+
+::: {.footer id="release-clause"}
+The author's affiliation with The MITRE Corporation is provided for identification pusposes only, and is not intended to convey or imply MITRE's concurrence with, or support for, the positions, opinions or viewpoints expressed by the author. 
+:::
 
 ## A little about me... {.smaller}
+
+<br><br>
 
 :::: {.columns}
 
@@ -98,11 +111,15 @@ library(scales)
 
 ```{r}
 #| label: r_readdata
-#| code-fold: true
 #| echo: true
 
+# URL for the CMS data used in these slides
 url <- "https://data.cms.gov/data-api/v1/dataset/8889d81e-2ee7-448f-8713-f071038289b5/data?size=5000"
+
+# Download and convert the JSON file to a data frame
 df <- jsonlite::fromJSON(url)
+
+# View the data frame in a friendly format for Quarto
 knitr::kable(head(df), format="html")
 
 ```
@@ -112,12 +129,18 @@ knitr::kable(head(df), format="html")
 ```{python}
 #| label: python_readdata
 #| python.reticulate: FALSE
-#| code-fold: true
 #| eval: false
+#| echo: true
 
 import pandas as pd
+
+# URL for the CMS data used in these slides
 url = "https://data.cms.gov/data-api/v1/dataset/8889d81e-2ee7-448f-8713-f071038289b5/data?size=5000"
+
+# Download and convert the JSON file to a data frame
 df = pd.read_json(url)
+
+# View the data frame in a friendly format for Quarto
 df.to_html()
 
 ``` 
@@ -132,12 +155,22 @@ df.to_html()
 
 ```{r}
 #| label: r_datatypes
+#| echo: true
 
+# Subset the data down to a select few to work with. 
+# Then convert "Bene_" and "Tot_" variables to numeric. 
+# The ID and zip code variables get converted to factors.
 df.subset <- df |> 
-    select(Rndrng_NPI,Rndrng_Prvdr_Zip5,Tot_Benes,Tot_Srvcs,starts_with("Bene_")) |>
+    select(Rndrng_NPI,
+           Rndrng_Prvdr_Zip5,
+           Tot_Benes,
+           Tot_Srvcs,
+           starts_with("Bene_")) |>
     mutate(across(starts_with(c("Bene_","Tot_")), as.numeric),
-                                 across(starts_with("Rndrng_"), factor))
+           across(starts_with("Rndrng_"), factor))
 
+# View the data frame in a friendly format for Quarto
+knitr::kable(head(df.subset), format="html")
 ```
 
 ### Python
@@ -145,15 +178,18 @@ df.subset <- df |>
 ```{python}
 #| label: python_datatypes
 #| python.reticulate: FALSE
-#| code-fold: true
 #| eval: false
+#| echo: true
 
+# Subset down to the columns of interest.
 cols = [0,12,19,20,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72]
 df_subset = df.iloc[:,cols]
 
+# Convert character to numeric columns. 
 numeric_cols = df_subset.columns.drop(["Rndrng_NPI","Rndrng_Prvdr_Zip5"])
 df_subset[numeric_cols]=df_subset[numeric_cols].apply(pd.to_numeric, errors='coerce')
 
+# Convert ID and zip code columns to categorical. 
 categorical_cols = ["Rndrng_NPI","Rndrng_Prvdr_Zip5"]
 df_subset[categorical_cols]=df_subset[categorical_cols].apply(pd.Categorical)
 
@@ -163,16 +199,18 @@ df_subset[categorical_cols]=df_subset[categorical_cols].apply(pd.Categorical)
 
 ## Exploratory data analysis {.smaller}
 
-Exploratory data analysis (EDA) is used by data scientists to analyze and investigate data sets and summarize their main characteristics, often employing data visualization methods. It helps determine how best to manipulate data sources to get the answers you need, making it easier for data scientists to discover patterns, spot anomalies, test a hypothesis, or check assumptions. ^[IBM What is exploratory data analysis?](https://www.ibm.com/topics/exploratory-data-analysis)
+Exploratory data analysis (EDA) is used by data scientists to analyze and investigate data sets and summarize their main characteristics, often employing data visualization methods. It helps determine how best to manipulate data sources to get the answers you need, making it easier for data scientists to discover patterns, spot anomalies, test a hypothesis, or check assumptions. ^[[IBM What is exploratory data analysis?](https://www.ibm.com/topics/exploratory-data-analysis)]
+
+<br><br>
 
 Four primary types of EDA:
 
-1. Univariate non-graphical
-2. Univariate graphical
-3. Multivariate nongraphical
-4. Multivariate graphical
+1. **Univariate non-graphical**: Describe the data and find patterns that exist within a variable.
+2. **Univariate graphical**: For a single variable, explore the values visaully using graphs like box plots or histograms.
+3. **Multivariate nongraphical**: Describe the relationships between two or more variables in the data. 
+4. **Multivariate graphical**: Visualize the relationships between two or more variables through graphs like scatter plots or heat maps, 
 
-## Applying EDA: Univariate
+## Applying EDA: Univariate {.smaller}
 
 ::: {.panel-tabset}
 
@@ -180,10 +218,14 @@ Four primary types of EDA:
 
 ```{r}
 #| label: r_eda_univariate
-#| code-fold: true
 #| echo: true
 
-skimr::skim(df)
+# Use the skimr package to examine the dataset. 
+# Produces a high level summary (# of rows/columns, column types)
+# For each column type, it produces details about each variable.
+
+library(skimr)
+skim(df.subset)
 
 ```
 
@@ -192,7 +234,6 @@ skimr::skim(df)
 ```{python}
 #| label: python_eda_univariate
 #| python.reticulate: FALSE
-#| code-fold: true
 #| eval: false
 
 from pyskim import skim
@@ -202,7 +243,7 @@ skim(df_subset)
 
 :::
 
-## Applying EDA: Multivariate
+## Applying EDA: Multivariate {.smaller}
 
 ::: {.panel-tabset}
 
@@ -210,17 +251,24 @@ skim(df_subset)
 
 ```{r}
 #| label: r_eda_multivariate
-#| code-fold: true
 #| echo: true
+#| fig-height: 7
 
-g <- ggplot(df.subset, aes(x=Bene_Feml_Cnt, y=Bene_Male_Cnt)) + 
+library(ggplot2)
+library(ggExtra)
+library(ggthemes)
+
+# Create a scatter plot with the number of beneficiaries by gender.
+g <- ggplot(df.subset, 
+            aes(x=Bene_Feml_Cnt, 
+                y=Bene_Male_Cnt)) + 
     geom_point() +
     theme(legend.position="none") +
-    labs(x="Total Beneficiaries",
-         y="Total Services") +
-    scale_x_continuous(labels=label_number(scale_cut = cut_short_scale())) +
-    scale_y_continuous(labels=label_number(scale_cut = cut_short_scale())) +
-    ggthemes::theme_hc()
+    labs(x="Total Female Beneficiaries",
+         y="Total Male Beneficiaries") +
+    scale_x_continuous(labels=label_number(scale_cut=cut_short_scale())) +
+    scale_y_continuous(labels=label_number(scale_cut=cut_short_scale())) +
+    theme_hc()
 
 ggMarginal(g, type="histogram")
 
@@ -231,7 +279,6 @@ ggMarginal(g, type="histogram")
 ```{python}
 #| label: python_eda_multivariate
 #| python.reticulate: FALSE
-#| code-fold: true
 #| eval: false
 
 import seaborn as sns
@@ -240,7 +287,7 @@ import matplotlib.pyplot as plt
 g = sns.jointplot(x=df_subset['Bene_Feml_Cnt'],
                   y=df_subset['Bene_Male_Cnt'],
                   kind='scatter')
-g.set_axis_labels("Total Beneficiaries","Total Services")
+g.set_axis_labels("Total Female Beneficiaries","Total Male Beneficiaries")
 
 plt.show()
 
@@ -253,17 +300,31 @@ plt.show()
 
 ## Questions to ask when working with missing data
 
+::: {.incremental id="small-bullets"}
 - Does "missing" mean something different from "0"?
+  - If you have data on the amount of candy sold per day, does a missing value mean no candy was sold? or the amount of candy sold is unknown? 
 - Is "missing" captured in another way? 
+  - Sometimes negative values or "99" can imply a value is missing. 
 - Was there a change in how data was being captured?
+  - For long standing data capture initiatives (e.g., surveys), the data collection methods can change without notice to the analysts.
+    - Was the way data was being capture changed? 
+    - Did the range of values change? 
+    - Do the values represent something different?
 - Does it make sense to replacing missing values?
+  - If a variable is mostly missing, replacing it with any method could lead 
 
-## Imputing missing data
+:::
+
+## Imputing missing data 
 
 There are two general approaches:
 
-- Overly simple approach: replace missing values with mean, median, or mode
-- Sophisticated approach: replacing missing values by analyzing the full dataset
+::: {.incremental}
+
+- **Overly simple approach**: replace missing values with mean, median, or mode
+- **Sophisticated approach**: replacing missing values by analyzing the full dataset and building a model per variable with missing data
+
+:::
 
 ## Multivariate Imputation by Chained Equations (MICE)
 
@@ -273,16 +334,20 @@ There are two general approaches:
 
 ```{r}
 #| label: r_mice
-#| code-fold: true
 #| echo: true
+#| eval: false
 
 library(mice)
+
+# Remove large dimensional variables
 df.to.impute <- df.subset |> select(-Rndrng_NPI,-Rndrng_Prvdr_Zip5)
+
+# Impute missing data using predictive mean matching
 imputed <- df.to.impute |>
     mice(m=1, maxit=10, seed=42, method="pmm")
 
+# Show the complete dataset including imputed values
 complete(imputed)
-
 
 ```
 
@@ -291,7 +356,6 @@ complete(imputed)
 ```{python}
 #| label: python_mice
 #| python.reticulate: FALSE
-#| code-fold: true
 #| eval: false
 
 from sklearn.experimental import enable_iterative_imputer
@@ -300,9 +364,11 @@ from sklearn.impute import IterativeImputer
 imputer = IterativeImputer(random_state=42, max_iter=10)
 
 df_train=df_subset.loc[:,["Bene_CC_Hyprtnsn_Pct"]]
-# df_train.head(n=20)
+
 imputer.fit(df_train)
+
 df_imputed = imputer.transform(df_train)
+
 df_imputed[:20]
 
 ```
@@ -321,7 +387,7 @@ Changes in the data can happen over time, resulting in "data drift" that can imp
 Image taken from [DataCamp](https://www.datacamp.com/tutorial/understanding-data-drift-model-drift).
 :::
 
-## Cognitive biases {.smaller}
+## Cognitive biases 
 
 Cognitive biases are systematic patterns of deviation from norm and/or rationality in judgment. They are often studied in psychology, sociology and behavioral economics.^[Haselton MG, Nettle D, Andrews PW (2005). "The evolution of cognitive bias" (PDF). In Buss DM (ed.). The Handbook of Evolutionary Psychology. Hoboken, NJ: John Wiley & Sons Inc. pp. 724–746.]
 
@@ -332,7 +398,7 @@ Some biases to be aware of:
 - **Availability bias**: Drawing conclusions on limited data. 
 - **Confirmation bias**: Manipulating data to confirm your own hypothesis. 
 
-## Simpson's paradox {.smaller}
+## Simpson's paradox 
 
 Simpson's paradox occurs when groups of data show one particular trend, but this trend is reversed when the groups are combined together. Understanding and identifying this paradox is important for correctly interpreting data. ^[Simpson, Edward H. (1951). "The Interpretation of Interaction in Contingency Tables". Journal of the Royal Statistical Society, Series B. 13: 238–241.]
 
@@ -340,7 +406,7 @@ Simpson's paradox occurs when groups of data show one particular trend, but this
 
 ::: {.column width="50%"}
 
-<br><br>
+<br>
 
 A baseball player can have higher batting average than another on each of two years, but lower than the other when the two are combined. In one case, David Justice had a higher batting average than Derek Jeter in 1995 and 1996, but across the two years, Jeter's average was higher. ^[[Simpon's Paradox by Brilliant](https://brilliant.org/wiki/simpsons-paradox)]
 
@@ -354,7 +420,7 @@ A baseball player can have higher batting average than another on each of two ye
 
 ::::
 
-## Goodhart's law {.smaller}
+## Goodhart's law 
 
 :::: {.columns}
 
@@ -382,7 +448,7 @@ or a better way of putting it is:
 
 # Sharing your data with others
 
-## Reproducibility and Replicability {.smaller}
+## Reproducibility and Replicability 
 
 :::: {.columns}
 
@@ -391,7 +457,7 @@ Reproducibility is the ability of independent investigators to draw the same con
 
 Easy tips for enabling others to reproduce your work:
 
-:::: {.columns}
+:::: {.columns id="small-bullets"}
 
 ::: {.column width="50%"}
 
@@ -419,16 +485,23 @@ Easy tips for enabling others to reproduce your work:
 :::
 
 ::: {.column width="25%"}
-![](https://imgs.xkcd.com/comics/the_difference.png){fig-align="center" height="50%"}
+![](https://imgs.xkcd.com/comics/the_difference.png){fig-align="center" height="50%"}^[[xkcd 242](https://xkcd.com/242/)]
 :::
 
 ::::
 
 ## Using pins
 
-The pins package publishes data, models, and other R objects, making it easy to share them across projects and with your colleagues. You can pin objects to a variety of pin boards, including folders (to share on a networked drive or with services like DropBox), Posit Connect, Amazon S3, Google Cloud Storage, Azure storage, and Microsoft 365 (OneDrive and SharePoint). Pins can be automatically versioned, making it straightforward to track changes, re-run analyses on historical data, and undo mistakes. ^[https://pins.rstudio.com/]
+The pins package publishes data, models, and other R objects, making it easy to share them across projects and with your colleagues. You can pin objects to a variety of pin boards, including:
 
-Pins is available in [R](https://pins.rstudio.com/) and [Python](https://rstudio.github.io/pins-python/).
+- folders (to share on a networked drive or with services like DropBox)
+- Posit Connect
+- Amazon S3
+- Google Cloud Storage
+- Azure storage
+- Microsoft 365 (OneDrive and SharePoint). 
+
+Pins can be automatically versioned, making it straightforward to track changes, re-run analyses on historical data, and undo mistakes.^[https://pins.rstudio.com/] Pins is available in [R](https://pins.rstudio.com/) and [Python](https://rstudio.github.io/pins-python/).
 
 ## Discussion / Contact Info
 
@@ -442,6 +515,10 @@ Pins is available in [R](https://pins.rstudio.com/) and [Python](https://rstudio
 
 :::
 
+:::: {.columns}
+
+::: {.column width="40%"}
+
 <br><br>
 
 [{{< fa envelope size=xl >}} chris@christopherteixeira.com](mailto:chris@christopherteixeira.com)
@@ -450,6 +527,17 @@ Pins is available in [R](https://pins.rstudio.com/) and [Python](https://rstudio
 
 [{{< fa brands github size=xl >}} ct-analytics](https://github.com/ct-analytics)
 
+:::
 
+::: {.column width="60%"}
 
+![](https://imgs.xkcd.com/comics/flawed_data.png){fig-align="center"}
+
+:::
+
+::::
+
+::: aside
+[xkcd 2494](https://xkcd.com/2494/)
+:::
 
