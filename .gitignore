@@ -2,3 +2,4 @@ env/
 _extensions/
 .Rproj.user
 data/
+.ipynb_checkpoints/
