@@ -43,11 +43,23 @@ ggMarginal(g, type="histogram")
 
 library(mice)
 md.pattern(df.subset)
+df.to.impute <- df.subset |> select(-Rndrng_NPI,-Rndrng_Prvdr_Zip5)
+# missing.data.to.impute <- is.na(df.to.impute)
+# 
+# missing.data.to.impute <- missing.data.to.impute |> as_tibble() |> mutate(across(!Bene_CC_Hyprtnsn_Pct & !Bene_CC_Alzhmr_Pct, ~ min(.) |> as.logical()))
 
-imp <- df.subset |>
-    mice(maxit=10, seed=42)
+imp <- df.to.impute |>
+    mice(m=1, maxit=10, seed=42, method="pmm", printFlag = FALSE)
 
+imp$imp$Bene_CC_Hyprtnsn_Pct
+imp$imp$Bene_CC_Alzhmr_Pct
+complete(imp)
 
+iris.mis <- missForest::prodNA(iris, noNA = 0.1)
+iris.mis <- subset(iris.mis, select = -c(Species))
+
+imputed_Data <- mice(iris.mis, m=5, maxit = 50, method = 'pmm', seed = 500)
+summary(imputed_Data)
 
 
 
