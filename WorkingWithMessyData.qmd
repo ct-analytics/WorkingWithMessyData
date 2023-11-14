@@ -73,6 +73,8 @@ library(scales)
 
 ```{python}
 #| python.reticulate: FALSE
+#| label: python_setup
+#| eval: false
 
 # import pandas as pd
 # url = "https://data.cms.gov/data-api/v1/dataset/8889d81e-2ee7-448f-8713-f071038289b5/data?size=5000"
@@ -211,15 +213,16 @@ skim(df_subset)
 #| code-fold: true
 #| echo: true
 
-ggplot(df.subset, aes(x=Bene_Feml_Cnt, y=Bene_Male_Cnt)) + 
+g <- ggplot(df.subset, aes(x=Bene_Feml_Cnt, y=Bene_Male_Cnt)) + 
     geom_point() +
     theme(legend.position="none") +
     labs(x="Total Beneficiaries",
          y="Total Services") +
     scale_x_continuous(labels=label_number(scale_cut = cut_short_scale())) +
     scale_y_continuous(labels=label_number(scale_cut = cut_short_scale())) +
-    ggthemes::theme_hc() |>
-    ggMarginal(type="histogram")
+    ggthemes::theme_hc()
+
+ggMarginal(g, type="histogram")
 
 ```
 
@@ -274,7 +277,12 @@ There are two general approaches:
 #| echo: true
 
 library(mice)
-df.imputed <- df.subset |> mice(maxit=10, seed=42)
+df.to.impute <- df.subset |> select(-Rndrng_NPI,-Rndrng_Prvdr_Zip5)
+imputed <- df.to.impute |>
+    mice(m=1, maxit=10, seed=42, method="pmm")
+
+complete(imputed)
+
 
 ```
 
