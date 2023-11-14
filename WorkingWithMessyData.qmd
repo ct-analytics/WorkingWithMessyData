@@ -268,7 +268,36 @@ There are two general approaches:
 
 ### R
 
+```{r}
+#| label: r_mice
+#| code-fold: true
+#| echo: true
+
+library(mice)
+df.imputed <- df.subset |> mice(maxit=10, seed=42)
+
+```
+
 ### Python
+
+```{python}
+#| label: python_mice
+#| python.reticulate: FALSE
+#| code-fold: true
+#| eval: false
+
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+
+imputer = IterativeImputer(random_state=42, max_iter=10)
+
+df_train=df_subset.loc[:,["Bene_CC_Hyprtnsn_Pct"]]
+# df_train.head(n=20)
+imputer.fit(df_train)
+df_imputed = imputer.transform(df_train)
+df_imputed[:20]
+
+```
 
 :::
 
